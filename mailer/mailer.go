@@ -2,9 +2,11 @@ package mailer
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/textproto"
+
 	"github.com/gophish/gomail"
 	log "github.com/gophish/gophish/logger"
 	"github.com/sirupsen/logrus"
@@ -163,6 +165,11 @@ func sendMail(ctx context.Context, dialer Dialer, ms []Mail) {
 		println("To ",message.GetHeader("To"))
 		println("Bcc ",message.GetHeader("Bcc"))
 		println("BCC ",message.GetHeader("BCC"))
+
+		s, _ := json.MarshalIndent(message, "", "\t")
+		
+		print(string(s))
+
 
 		err = gomail.Send(sender, message)
 		if err != nil {

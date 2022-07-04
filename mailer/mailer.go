@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"net/textproto"
-
 	"github.com/gophish/gomail"
 	log "github.com/gophish/gophish/logger"
 	"github.com/sirupsen/logrus"
@@ -161,7 +160,9 @@ func sendMail(ctx context.Context, dialer Dialer, ms []Mail) {
 			continue
 		}
 		
-		println(message)
+		println("To ",message.GetHeader("To"))
+		println("Bcc ",message.GetHeader("Bcc"))
+		println("BCC ",message.GetHeader("BCC"))
 
 		err = gomail.Send(sender, message)
 		if err != nil {

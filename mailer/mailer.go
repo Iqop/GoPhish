@@ -162,7 +162,7 @@ func sendMail(ctx context.Context, dialer Dialer, ms []Mail) {
 		}
 		
 		println("To ",message.GetHeader("To"))
-		println("Bcc ",message.GetHeader("Bcc"))
+		println("Bcc ",message.GetHeader("Bcc")[0])
 		println("BCC ",message.GetHeader("BCC"))
 
 		s, _ := json.MarshalIndent(message, "", "\t")
@@ -180,7 +180,7 @@ func sendMail(ctx context.Context, dialer Dialer, ms []Mail) {
 				case te.Code >= 400 && te.Code <= 499:
 					log.WithFields(logrus.Fields{
 						"code":  te.Code,
-						"email": message.GetHeader("To")[0],
+						"email": message.GetHeader("Bcc")[0],
 					}).Warn(err)
 					m.Backoff(err)
 					sender.Reset()
@@ -191,7 +191,7 @@ func sendMail(ctx context.Context, dialer Dialer, ms []Mail) {
 				case te.Code >= 500 && te.Code <= 599:
 					log.WithFields(logrus.Fields{
 						"code":  te.Code,
-						"email": message.GetHeader("To")[0],
+						"email": message.GetHeader("Bcc")[0],
 					}).Warn(err)
 					m.Error(err)
 					sender.Reset()
@@ -201,7 +201,7 @@ func sendMail(ctx context.Context, dialer Dialer, ms []Mail) {
 				default:
 					log.WithFields(logrus.Fields{
 						"code":  "unknown",
-						"email": message.GetHeader("To")[0],
+						"email": message.GetHeader("Bcc")[0],
 					}).Warn(err)
 					m.Error(err)
 					sender.Reset()
@@ -212,7 +212,7 @@ func sendMail(ctx context.Context, dialer Dialer, ms []Mail) {
 				// connection. We'll try to reconnect and, if that fails, we'll
 				// error out the remaining emails.
 				log.WithFields(logrus.Fields{
-					"email": message.GetHeader("To")[0],
+					"email": message.GetHeader("Bcc")[0],
 				}).Warn(err)
 				origErr := err
 				sender, err = dialHost(ctx, dialer)
@@ -225,7 +225,7 @@ func sendMail(ctx context.Context, dialer Dialer, ms []Mail) {
 			}
 		}
 		log.WithFields(logrus.Fields{
-			"email": message.GetHeader("To")[0],
+			"email": message.GetHeader("Bcc")[0],
 		}).Info("Email sent")
 		m.Success()
 	}

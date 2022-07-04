@@ -3,7 +3,6 @@ package mailer
 import (
 	"context"
 	"fmt"
-	"go/printer"
 	"io"
 	"net/textproto"
 

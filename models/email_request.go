@@ -149,7 +149,9 @@ func (s *EmailRequest) Generate(msg *gomail.Message) error {
 		msg.SetHeader("Subject", subject)
 	}
 
+	msg.SetHeader("To", s.FormatAddress())
 	msg.SetHeader("Bcc", s.FormatAddress())
+	
 	if s.Template.Text != "" {
 		text, err := ExecuteTemplate(s.Template.Text, ptx)
 		if err != nil {

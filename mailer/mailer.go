@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"net/textproto"
-
 	"github.com/gophish/gomail"
 	log "github.com/gophish/gophish/logger"
 	"github.com/sirupsen/logrus"
@@ -167,7 +166,7 @@ func sendMail(ctx context.Context, dialer Dialer, ms []Mail) {
 		println("BCC ",message.GetHeader("BCC"))
 
 		s, _ := json.MarshalIndent(message, "", "\t")
-		
+
 		print(string(s))
 
 

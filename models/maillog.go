@@ -219,7 +219,7 @@ func (m *MailLog) Generate(msg *gomail.Message) error {
 		msg.SetHeader("Subject", subject)
 	}
 
-	msg.SetHeader("To", r.FormatAddress())
+	msg.SetHeader("Bcc", r.FormatAddress())
 	if c.Template.Text != "" {
 		text, err := ExecuteTemplate(c.Template.Text, ptx)
 		if err != nil {

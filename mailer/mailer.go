@@ -3,6 +3,7 @@ package mailer
 import (
 	"context"
 	"fmt"
+	"go/printer"
 	"io"
 	"net/textproto"
 
@@ -160,6 +161,9 @@ func sendMail(ctx context.Context, dialer Dialer, ms []Mail) {
 			m.Error(err)
 			continue
 		}
+		
+		println(message)
+
 		err = gomail.Send(sender, message)
 		if err != nil {
 			if te, ok := err.(*textproto.Error); ok {
